@@ -27,10 +27,9 @@ struct ProfileScreen: View {
                 trailing: // Add trailing view
                 Image("Michael") 
                     .resizable()
-                    .frame(width: 40, height: 40)
+                    .frame(width: 50, height: 50)
                     .clipShape(Circle())
             ) // Clip the image to a circle
-            
         }
     }
     
