@@ -130,6 +130,12 @@ struct ItemDetail: View {
     @State var progress: Double = 0
     @State var duration: Double = 0
 
+    @State private var drawingHeight = true
+     
+        var animation: Animation {
+            return .linear(duration: 0.5).repeatForever()
+        }
+    
 // audio slider
 //    let audioAsset = AVURLAsset.init(item.music)
 //
@@ -164,7 +170,8 @@ struct ItemDetail: View {
             Text(item.name)
                 .font(.title)
                 .fontWeight(.semibold)
-                .padding(.bottom, 30)
+//                .padding(.bottom, 30)
+                .position(x: 200, y: -70)
 //            Slider(value: $sliderValue, in: 0...10)
             HStack {
                 Text("\(formattedTime(progress))") // display progress as percentage
@@ -195,10 +202,48 @@ struct ItemDetail: View {
                         .aspectRatio(contentMode: .fit)
                 }
                 
+//                VStack{
+//                    Text("Length " + String(format: "%.1f", player.duration))
+//                    Text("CurrentTime " + String(format: "%.1f", player.currentTime))
+//                }
                 
                 if let player = player {
-                    Text("Length " + String(format: "%.1f", player.duration))
-                    Text("CurrentTime " + String(format: "%.1f", player.currentTime))
+
+                    
+                    VStack(alignment: .leading) {
+                        
+                        Text("Length " + String(format: "%.1f", player.duration))
+                        Text("CurrentTime " + String(format: "%.1f", player.currentTime))
+                            .multilineTextAlignment(.center)
+                  
+                    
+                        HStack {
+                            bar(low: 0.4)
+                                .animation(animation.speed(1.5), value: drawingHeight)
+                            bar(low: 0.3)
+                                .animation(animation.speed(1.2), value: drawingHeight)
+                            bar(low: 0.5)
+                                .animation(animation.speed(1.0), value: drawingHeight)
+                            bar(low: 0.3)
+                                .animation(animation.speed(1.7), value: drawingHeight)
+                            bar(low: 0.5)
+                                .animation(animation.speed(1.0), value: drawingHeight)
+                            bar(low: 0.4)
+                                .animation(animation.speed(1.5), value: drawingHeight)
+                            bar(low: 0.3)
+                                .animation(animation.speed(1.2), value: drawingHeight)
+                            bar(low: 0.5)
+                                .animation(animation.speed(1.0), value: drawingHeight)
+                            bar(low: 0.3)
+                                .animation(animation.speed(1.7), value: drawingHeight)
+                            bar(low: 0.5)
+                                .animation(animation.speed(1.0), value: drawingHeight)
+                        }
+                        .frame(width: 150)
+                        .onAppear{
+                            drawingHeight.toggle()
+                        }
+                    }
                 }
                 
                 Spacer()
@@ -218,10 +263,20 @@ struct ItemDetail: View {
         
     }
     
+// playback time function
     private func formattedTime(_ time: Double) -> String {
         let minutes = Int(time / 60)
         let seconds = Int(time) % 60
         return String(format: "%d:%02d", minutes, seconds)
+    }
+    
+// moving bar animation
+    func bar(low: CGFloat = 0.0, high: CGFloat = 1.0) -> some View {
+        RoundedRectangle(cornerRadius: 3)
+            .fill(.indigo.gradient)
+            .frame(height: (drawingHeight ? high : low) * 70)
+            .frame(height: -100, alignment: .bottom)
+            .position(x: 30, y: -120)
     }
     
 }
